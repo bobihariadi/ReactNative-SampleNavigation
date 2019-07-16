@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { createStackNavigator, createDrawerNavigator } from "react-navigation";
+import { Text, View, StyleSheet, SafeAreaView, ScrollView, Dimensions } from 'react-native';
+import { createStackNavigator, createDrawerNavigator, DrawerItems } from "react-navigation";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Header, Icon, Button, StatusBar } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-class AccountScreen extends Component {
-  
+const { width } = Dimensions.get('window');
+
+class AccountScreen extends Component {  
     render() {
         return (
           <View>
@@ -37,29 +38,39 @@ class ButtonLeft extends Component {
       return (
           
           <TouchableOpacity >
-          <Button          
-          onPress={() => this.props.navigate.openDrawer()}
-          type={'clear'}
-          icon ={
-            <Icon
-              name={'menu'}
-              size={35}                           
-              color={'white'}              
+            <Button          
+              onPress={() => this.props.navigate.openDrawer()}
+              type={'clear'}
+              icon ={
+                <Icon
+                  name={'menu'}
+                  size={35}                           
+                  color={'white'}              
+                />
+              }
             />
-          }
-          />
-          </TouchableOpacity>
-         
+          </TouchableOpacity>         
       )
   }
 }
+
+const AppDrawerCustoms = ( props ) => (
+  <SafeAreaView style={{flex: 1}}>
+    <View style={{height: 150, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}} >
+      <Text style={{color: 'white', fontWeight: 'bold', fontSize: 25}}>Sample</Text>
+    </View>
+    <ScrollView>
+      <DrawerItems {...props} />
+    </ScrollView>
+  </SafeAreaView>
+)
 
 
 class MyHomeScreen extends React.Component {
     static navigationOptions = {
       drawerLabel: 'Home',
       drawerIcon: ({ tintColor }) => (
-        <Icon name={'ios-contact'} size={25} color={tintColor} />
+        <Ionicons name={'ios-contact'} size={25} color={tintColor} />
       ),
     };
   
@@ -98,17 +109,6 @@ class MyHomeScreen extends React.Component {
     },
   });
   
-//   const MyDrawerNavigator = createDrawerNavigator({
-//     Home: {
-//       screen: MyHomeScreen,
-//     },
-//     Notifications: {
-//       screen: MyNotificationsScreen,
-//     },
-//   });
-  
-//   const MyApp = createAppContainer(MyDrawerNavigator);
-
 
 const Account = createStackNavigator(
     {
@@ -116,11 +116,22 @@ const Account = createStackNavigator(
             screen: AccountScreen,
             navigationOptions:{
                 header: null, 
-                title: 'header main',
+                // title: 'header main', 
                 headerTintColor: '#fff',
+                // headerLeft: (<Button
+                  
+                //   type="clear"                   
+                //   icon={
+                //       <Ionicons
+                //         name={'ios-arrow-back'}
+                //         size={35}
+                //         color={'white'}
+                //       />
+                //   }
+                //   />),
                 headerStyle:{
                     backgroundColor: '#f4511e',
-                },                
+                },
             }
         }
     }
@@ -131,7 +142,7 @@ const MyDrawerNavigator = createDrawerNavigator({
       screen: Account,
       drawerLockMode: 'unlocked',
       navigationOptions: {  
-        drawerLabel: 'Home',
+        drawerLabel: 'Homes',
         drawerIcon: ({ tintColor }) => (
             <Ionicons name={'ios-contact'} size={25} color={tintColor} />
         ),
@@ -140,13 +151,18 @@ const MyDrawerNavigator = createDrawerNavigator({
     Notifications: {
       screen: MyNotificationsScreen,
     },
+    HomeScreen: {
+      screen: MyHomeScreen,
+    },
   },{
-      navigationOptions:{
-          
+      contentOptions:{
+          activeTintColor: 'green',
       },
     //   drawerType: 'slide',
     //   gesturesEnabled: false,
       drawerLockMode: 'unlocked',
+      contentComponent: AppDrawerCustoms,
+      drawerWidth: width,
   });
 
  export default MyDrawerNavigator;
