@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, StatusBar} from 'react-native';
 
 import Routes from './config/routes';
 
 class App extends Component {
   render() {
-    return <Routes />
+    return (
+      <View style={{flex:1}}>
+        <StatusBar
+                backgroundColor="#f4511e"
+                barStyle="light-content"
+            />
+        <Routes />
+      </View>
+    ) 
   }
 } 
 
